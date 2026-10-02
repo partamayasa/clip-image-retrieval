@@ -1,0 +1,36 @@
+{
+  "random_seed": 42,
+  "target_article_types": [
+    "Tshirts",
+    "Shirts",
+    "Casual Shoes",
+    "Formal Shoes",
+    "Sports Shoes",
+    "Watches",
+    "Backpacks",
+    "Jackets",
+    "Jeans",
+    "Handbags",
+    "Caps",
+    "Sunglasses",
+    "Kurtas"
+  ],
+  "ground_truth_products_count": 1500,
+  "subset_eda_size": 500,
+  "subset_eval_size": 1500,
+  "eval_articleType_dist": {
+    "Tshirts": 457,
+    "Shirts": 198,
+    "Casual Shoes": 193,
+    "Watches": 151,
+    "Sports Shoes": 137,
+    "Handbags": 117,
+    "Sunglasses": 71,
+    "Backpacks": 55,
+    "Formal Shoes": 50,
+    "Jeans": 28,
+    "Jackets": 22,
+    "Caps": 21
+  },
+  "distractor_products_count": 0
+}
