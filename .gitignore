@@ -1,0 +1,49 @@
+# Virtual Environment
+.venv/
+
+# Python Cache & Testing
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+
+# Raw Dataset & Images (Multi-Gigabytes)
+data/dataset/*
+!data/dataset/.gitkeep
+archive/
+fashion-dataset/
+
+# Local Model Weights & Cache (Hundreds of Megabytes)
+data/models/*
+!data/models/.gitkeep
+/models/
+!src/models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+
+# SQLite Lock & Journal
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Environment & IDE
+.env
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Local Scripts
+start.sh
+deploy.sh
+start.bat
+
+# Third-party Assets & Vendor
+.admin-lte-v4.10.0/

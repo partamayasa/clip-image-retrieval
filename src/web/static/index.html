@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multimodal Information Retrieval</title>
+
+  <!-- Google Font: Source Sans 3 (Local Copy) -->
+  <link rel="stylesheet" href="/static/vendor/source-sans-3/index.css" />
+
+  <!-- Bootstrap Icons (Local Copy) -->
+  <link rel="stylesheet" href="/static/vendor/bootstrap-icons/bootstrap-icons.min.css" />
+
+  <!-- AdminLTE v4.9.1 CSS (Local Copy in src/web/static/adminlte) -->
+  <link rel="stylesheet" href="/static/adminlte/css/adminlte.min.css" />
+
+  <!-- Tabulator Tables CSS (Bootstrap 5 theme, Local Copy) -->
+  <link rel="stylesheet" href="/static/vendor/tabulator/tabulator_bootstrap5.min.css" />
+
+  <!-- ApexCharts CSS (Local Copy) -->
+  <link rel="stylesheet" href="/static/vendor/apexcharts/apexcharts.css" />
+
+  <!-- Application Custom Styles -->
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+  <!--begin::App Wrapper-->
+  <div class="app-wrapper">
+
+    <!--begin::Header-->
+    <nav class="app-header navbar navbar-expand bg-body">
+      <div class="container-fluid">
+        <!-- Start navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+              <i class="bi bi-list fs-4"></i>
+            </a>
+          </li>
+          <li class="nav-item d-none d-md-block">
+            <span class="nav-link fw-semibold text-secondary">
+              Multimodal Information Retrieval
+            </span>
+          </li>
+        </ul>
+
+        <!-- End navbar links -->
+        <ul class="navbar-nav ms-auto align-items-center">
+          <!-- Ground Truth View Button -->
+          <li class="nav-item me-2">
+            <button class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
+              onclick="switchView('groundtruth')" title="Ground Truth Products &amp; Relevance Mapping">
+              <i class="bi bi-check2-square"></i>
+              <span>Ground Truth</span>
+            </button>
+          </li>
+          <!-- Data Prep View Button -->
+          <li class="nav-item me-2">
+            <button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
+              onclick="switchView('dataprep')" title="Data Preparation Pipeline &amp; Research Transparency">
+              <i class="bi bi-diagram-3-fill"></i>
+              <span>Data Preparation</span>
+            </button>
+          </li>
+          <!-- EDA View Button -->
+          <li class="nav-item">
+            <button class="btn btn-primary btn-sm d-flex align-items-center gap-1" onclick="switchView('eda')"
+              title="Exploratory Data Analysis &amp; Retrieval Insights">
+              <i class="bi bi-bar-chart-line-fill"></i>
+              <span>Dataset EDA &amp; Stats</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!--end::Header-->
+
+    <!--begin::Sidebar-->
+    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+      <!--begin::Sidebar Brand-->
+      <div class="sidebar-brand justify-content-center text-center">
+        <a href="javascript:void(0)" onclick="switchView('retrieval')" class="brand-link text-center w-100">
+          <span class="brand-text fw-bold">Fashion Product</span>
+        </a>
+      </div>
+      <!--end::Sidebar Brand-->
+
+      <!--begin::Sidebar Wrapper-->
+      <div class="sidebar-wrapper">
+        <nav class="mt-2">
+          <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
+            <li class="nav-header">RESEARCH MODULES</li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" class="nav-link active" id="nav-retrieval" onclick="switchView('retrieval')">
+                <i class="nav-icon bi bi-search"></i>
+                <p>Attribute Retrieval</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" class="nav-link" id="nav-dataprep" onclick="switchView('dataprep')">
+                <i class="nav-icon bi bi-diagram-3-fill"></i>
+                <p>Data Preparation</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" class="nav-link" id="nav-eda" onclick="switchView('eda')">
+                <i class="nav-icon bi bi-pie-chart-fill"></i>
+                <p>EDA Insight</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" class="nav-link" id="nav-benchmark" onclick="switchView('benchmark')">
+                <i class="nav-icon bi bi-table"></i>
+                <p>Research Query</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" class="nav-link" id="nav-groundtruth" onclick="switchView('groundtruth')">
+                <i class="nav-icon bi bi-check2-square"></i>
+                <p>Ground Truth</p>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <!--end::Sidebar Wrapper-->
+    </aside>
+    <!--end::Sidebar-->
+
+    <!--begin::App Main-->
+    <main class="app-main">
+      <!--begin::App Content Header-->
+      <div class="app-content-header py-3">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-sm-7">
+              <h3 class="mb-0 fw-bold" id="headerPageTitle">Fashion Product Image Retrieval</h3>
+              <p class="text-secondary small mb-0" id="headerPageSubtitle">Project 1: Attribute-Based Text-to-Image
+                Ranking using CLIP Shared Latent Space</p>
+            </div>
+            <div class="col-sm-5">
+              <ol class="breadcrumb float-sm-end small mb-0" id="headerBreadcrumbs">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" onclick="switchView('retrieval')">Home</a></li>
+                <li class="breadcrumb-item">Project 1</li>
+                <li class="breadcrumb-item active">Retrieval Lab</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::App Content Header-->
+
+      <!--begin::App Content-->
+      <div class="app-content">
+        <div class="container-fluid">
+
+          <!--begin::View Retrieval Lab-->
+          <div id="view-retrieval">
+
+
+            <!--begin::Search Control Card (AdminLTE Card Outline)-->
+            <div class="card card-outline card-primary shadow-sm mb-4">
+              <div class="card-header">
+                <h3 class="card-title fw-bold">
+                  <i class="bi bi-search me-1"></i> Search Query & Attribute Filter
+                </h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
+                    <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                    <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- Search bar group -->
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-md-10">
+                    <div class="input-group">
+                      <span class="input-group-text bg-body-secondary"><i class="bi bi-search"></i></span>
+                      <input type="text" id="searchInput" class="form-control"
+                        placeholder="Enter attribute query (e.g. 'women casual red dress', 'black shoes', 'blue jeans')"
+                        value="tshirts" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 d-grid">
+                    <button class="btn btn-primary fw-bold" onclick="executeSearch()">
+                      <i class="bi bi-arrow-right-circle-fill me-1"></i> Retrieve
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Research Queries Collapsible Section -->
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label text-secondary small fw-bold mb-0">
+                      Research Queries (Select for quick test):
+                    </label>
+                    <button class="btn btn-sm btn-outline-secondary py-0 px-2" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#queryPillsCollapse" aria-expanded="false" aria-controls="queryPillsCollapse"
+                      id="toggleQueryPillsBtn">
+                      <i class="bi bi-eye me-1" id="queryPillsIcon"></i>
+                      <span id="queryPillsToggleText">Show</span>
+                    </button>
+                  </div>
+                  <div class="collapse" id="queryPillsCollapse">
+                    <div class="p-3 border rounded bg-body-tertiary mb-1">
+                      <div class="d-flex flex-wrap gap-2" id="queryPillsContainer">
+                        <!-- Populated dynamically -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Search Control Card-->
+
+            <!--begin::Benchmark Evaluation Banner (Hidden)-->
+            <div id="benchmarkEvalBanner" class="card card-outline card-success shadow-sm mb-4 d-none"
+              style="display: none !important;">
+              <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                <h6 class="card-title fw-bold mb-0 text-success" id="benchBannerTitle">
+                  <i class="bi bi-award-fill me-1"></i> Benchmark Quantitative Evaluation Results
+                </h6>
+              </div>
+              <div class="card-body p-3">
+                <div class="row g-2 align-items-center mb-3">
+                  <div class="col-12 col-md-8">
+                    <div class="small text-secondary" id="benchBannerCriteria">
+                      Criteria: -
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 text-md-end">
+                    <span class="badge text-bg-secondary p-2" id="benchBannerPool">
+                      Ground Truth Pool: - items
+                    </span>
+                  </div>
+                </div>
+                <!-- Recall & Precision Metric Badges -->
+                <div class="row g-2 text-center" id="benchBannerMetrics">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+            </div>
+            <!--end::Benchmark Evaluation Banner-->
+
+            <!--begin::Retrieved Gallery Card (AdminLTE Card)-->
+            <div class="card card-outline card-secondary shadow-sm mb-4">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title fw-bold mb-0" id="galleryTitle">
+                  <i class="bi bi-grid-3x3-gap-fill me-1"></i> Top Retrieved Candidates
+                </h3>
+              </div>
+              <div class="card-body">
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="text-center py-5 d-none">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading</span>
+                  </div>
+                  <p class="text-secondary mt-2 small">Computing CLIP similarity dot product</p>
+                </div>
+
+                <!-- Product Cards Grid (3x3 format: 3 columns x 3 rows = 9 items per page) -->
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="productsGrid">
+                  <!-- Product cards injected by JavaScript -->
+                </div>
+
+                <!-- Pagination (active if results > 9) -->
+                <div id="paginationContainer"
+                  class="d-flex flex-wrap justify-content-between align-items-center mt-3 pt-3 border-top d-none">
+                  <div class="text-secondary small" id="paginationInfo">
+                    <!-- Pagination info text -->
+                  </div>
+                  <nav aria-label="Candidate results pagination">
+                    <ul class="pagination pagination-sm mb-0" id="paginationList">
+                      <!-- Dynamic page items -->
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <!--end::Retrieved Gallery Card-->
+
+          </div>
+          <!--end::View Retrieval Lab-->
+
+          <!--begin::View Ground Truth & Relevance Mapping-->
+          <div id="view-groundtruth" class="d-none">
+
+
+            <!--begin::Filter & Controls Card-->
+            <div class="card card-outline card-primary shadow-sm mb-4">
+              <div class="card-header py-2 bg-body-tertiary">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                      <i class="bi bi-funnel-fill text-primary me-2"></i> Ground Truth Filters &amp; Exploration Mode
+                    </h3>
+                    <span class="badge bg-secondary-subtle text-secondary-emphasis border small"
+                      id="gtFilteredCount">2,014 relations found</span>
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="View Mode">
+                      <button type="button" class="btn btn-outline-primary active" id="gtModeTableBtn"
+                        onclick="setGtViewMode('table')">
+                        <i class="bi bi-table me-1"></i> Data Table
+                      </button>
+                      <button type="button" class="btn btn-outline-primary" id="gtModeCardsBtn"
+                        onclick="setGtViewMode('cards')">
+                        <i class="bi bi-grid-3x3-gap-fill me-1"></i> Query Cards
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body p-3">
+                <div class="row g-2 align-items-end">
+                  <!-- Query Selector -->
+                  <div class="col-12 col-md-4 col-lg-3">
+                    <label class="form-label small fw-semibold text-secondary mb-1">Benchmark Query</label>
+                    <select class="form-select form-select-sm" id="gtFilterQuery" onchange="applyGtFilters()">
+                      <option value="">All Queries (30 Queries)</option>
+                    </select>
+                  </div>
+                  <!-- Specificity Level Filter -->
+                  <div class="col-6 col-md-2 col-lg-2">
+                    <label class="form-label small fw-semibold text-secondary mb-1">Ambiguity Level</label>
+                    <select class="form-select form-select-sm" id="gtFilterLevel" onchange="applyGtFilters()">
+                      <option value="">All Levels</option>
+                      <option value="General">General (Umum)</option>
+                      <option value="Medium">Medium (Menengah)</option>
+                      <option value="Specific">Specific (Spesifik)</option>
+                    </select>
+                  </div>
+                  <!-- Category Filter -->
+                  <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label small fw-semibold text-secondary mb-1">Article Category</label>
+                    <select class="form-select form-select-sm" id="gtFilterCategory" onchange="applyGtFilters()">
+                      <option value="">All Categories</option>
+                    </select>
+                  </div>
+                  <!-- Search Input -->
+                  <div class="col-12 col-md-3 col-lg-3">
+                    <label class="form-label small fw-semibold text-secondary mb-1">Search Product / Query</label>
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text"><i class="bi bi-search"></i></span>
+                      <input type="text" class="form-control" id="gtSearchInput"
+                        placeholder="Name, ID, color, query..." />
+                    </div>
+                  </div>
+                  <!-- Reset Button -->
+                  <div class="col-12 col-md-12 col-lg-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary w-100 text-nowrap"
+                      onclick="resetGtFilters()" title="Reset all filters">
+                      <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Filter & Controls Card-->
+
+            <!--begin::Table View Container-->
+            <div id="gtTableContainer" class="card card-outline card-secondary shadow-sm mb-4">
+              <div class="card-header py-2 bg-body-tertiary">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                  <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                    <i class="bi bi-list-check me-2 text-primary"></i> Ground Truth Relations List (Query &harr;
+                    Product)
+                  </h3>
+                  <div class="card-tools d-flex align-items-center gap-2 ms-auto">
+                    <button id="eval-gt-export-csv" type="button" class="btn btn-xs btn-outline-secondary">
+                      <i class="bi bi-filetype-csv me-1"></i> CSV
+                    </button>
+                    <button id="eval-gt-export-json" type="button" class="btn btn-xs btn-outline-secondary">
+                      <i class="bi bi-filetype-json me-1"></i> JSON
+                    </button>
+                    <button id="eval-gt-print-table" type="button" class="btn btn-xs btn-outline-secondary">
+                      <i class="bi bi-printer me-1"></i> Print
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body p-2">
+                <div class="table-responsive">
+                  <div id="gt-tabulator-table"></div>
+                </div>
+              </div>
+              <div class="card-footer py-2 text-secondary small d-flex justify-content-between align-items-center">
+                <span>Click on any thumbnail to zoom image. Click <strong>Test</strong> to evaluate the query in
+                  real-time.</span>
+                <span>Powered by Tabulator &amp; SQLite</span>
+              </div>
+            </div>
+            <!--end::Table View Container-->
+
+            <!--begin::Cards View Container (Grouped by Query)-->
+            <div id="gtCardsContainer" class="d-none mb-4">
+              <div class="accordion" id="gtCardsAccordion">
+                <!-- Dynamically generated accordion query cards -->
+              </div>
+            </div>
+            <!--end::Cards View Container-->
+
+          </div>
+          <!--end::View Ground Truth & Relevance Mapping-->
+
+          <!--begin::View Research Queries & Quantitative Evaluation-->
+          <div id="view-benchmark" class="d-none">
+
+            <!--begin::Ambiguity Level Breakdown Card-->
+            <div class="card card-outline card-secondary shadow-sm mb-4">
+              <div class="card-header py-2 bg-body-tertiary">
+                <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                  <i class="bi bi-layers-half me-1"></i> Performance Summary by Query Ambiguity Level
+                </h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
+                    <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                    <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered table-hover mb-0 text-center align-middle"
+                    style="font-size: 0.85rem;" id="bmLevelTable">
+                    <thead class="table-light text-center align-middle">
+                      <tr>
+                        <th class="text-center align-middle">Ambiguity Level</th>
+                        <th class="text-center align-middle">Precision@5</th>
+                        <th class="text-center align-middle">Precision@10</th>
+                        <th class="text-center align-middle">Precision@20</th>
+                        <th class="text-center align-middle">Recall@5</th>
+                        <th class="text-center align-middle">Recall@10</th>
+                        <th class="text-center align-middle">Recall@20</th>
+                      </tr>
+                    </thead>
+                    <tbody id="bmLevelTableBody">
+                      <!-- Populated dynamically via JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!--end::Ambiguity Level Breakdown Card-->
+
+            <!--begin::Tabulator Data Table Card (AdminLTE v4 tables/data.html Reference)-->
+            <div class="card card-outline card-primary shadow-sm mb-4">
+              <div class="card-header">
+                <h3 class="card-title fw-bold mb-0">
+                  <i class="bi bi-table me-1"></i> Research Queries &amp; Quantitative Evaluation Table
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 mb-3 align-items-center justify-content-between">
+                  <div class="d-flex gap-2">
+                    <button id="eval-export-csv" type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-filetype-csv me-1" aria-hidden="true"></i>
+                      Export CSV
+                    </button>
+                    <button id="eval-export-json" type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-filetype-json me-1" aria-hidden="true"></i>
+                      Export JSON
+                    </button>
+                    <button id="eval-print-table" type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-printer me-1" aria-hidden="true"></i>
+                      Print
+                    </button>
+                  </div>
+                  <div class="text-secondary small">
+                    <i class="bi bi-info-circle me-1"></i> Click the <strong>Test</strong> button on any query row to
+                    evaluate retrieval in real-time
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <div id="benchmark-tabulator-table"></div>
+                </div>
+              </div>
+              <div class="card-footer text-secondary small">
+                Powered by
+                <a href="https://tabulator.info/" target="_blank" rel="noopener">Tabulator</a>
+                &mdash; vanilla JS, no jQuery required. Template reference: AdminLTE v4.9.1 (tables/data.html).
+              </div>
+            </div>
+            <!--end::Tabulator Data Table Card-->
+          </div>
+          <!--end::View Research Queries & Quantitative Evaluation-->
+
+          <!--begin::View Exploratory Data Analysis & Retrieval Insights-->
+          <div id="view-eda" class="d-none">
+
+
+            <!--begin::Interactive Distribution Charts (AdminLTE apexcharts.html Pattern)-->
+            <div class="row g-4 mb-4">
+              <!-- Chart 1: Article Type Bar Chart -->
+              <div class="col-12 col-xl-6">
+                <div class="card card-outline card-primary shadow-sm h-100">
+                  <div class="card-header">
+                    <h3 class="card-title fw-bold">
+                      <i class="bi bi-bar-chart-fill me-1"></i> Top 10 Article Type Distribution
+                    </h3>
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse"
+                        aria-label="Collapse card">
+                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div id="chart-eda-article-type"></div>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+              </div>
+
+              <!-- Chart 2: Base Colour Column Chart -->
+              <div class="col-12 col-xl-6">
+                <div class="card card-outline card-secondary shadow-sm h-100">
+                  <div class="card-header">
+                    <h3 class="card-title fw-bold">
+                      <i class="bi bi-bar-chart-line-fill me-1"></i> Top 10 Base Colours Distribution
+                    </h3>
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse"
+                        aria-label="Collapse card">
+                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div id="chart-eda-base-colour"></div>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+              <!-- Chart 3: Gender Donut Chart -->
+              <div class="col-12 col-xl-6">
+                <div class="card card-outline card-info shadow-sm h-100">
+                  <div class="card-header">
+                    <h3 class="card-title fw-bold">
+                      <i class="bi bi-pie-chart-fill me-1"></i> Target User Segmentation (Gender)
+                    </h3>
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse"
+                        aria-label="Collapse card">
+                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div id="chart-eda-gender"></div>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+              </div>
+
+              <!-- Chart 4: Usage Context Bar Chart -->
+              <div class="col-12 col-xl-6">
+                <div class="card card-outline card-warning shadow-sm h-100">
+                  <div class="card-header">
+                    <h3 class="card-title fw-bold">
+                      <i class="bi bi-briefcase-fill me-1"></i> Product Usage Context Distribution
+                    </h3>
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse"
+                        aria-label="Collapse card">
+                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div id="chart-eda-usage"></div>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+              </div>
+            </div>
+            <!--end::Interactive Distribution Charts-->
+
+            <!--begin::Distribution Summary Breakdown Tables-->
+            <div class="row g-4 mb-4">
+              <!-- ArticleType Distribution -->
+              <div class="col-12 col-lg-6">
+                <div class="card card-outline card-primary shadow-sm h-100 mb-0">
+                  <div class="card-header py-2 bg-body-tertiary">
+                    <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                      <i class="bi bi-tag-fill me-1"></i> ArticleType Distribution (13 Categories)
+                    </h3>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                      <table class="table table-sm table-bordered table-hover mb-0 align-middle text-center"
+                        style="font-size: 0.875rem;" id="edaArticleTable">
+                        <thead class="table-light sticky-top text-center align-middle">
+                          <tr>
+                            <th class="text-center align-middle">Article Type</th>
+                            <th class="text-center align-middle" style="width: 100px;">Count</th>
+                            <th class="text-center align-middle" style="width: 120px;">Percentage</th>
+                          </tr>
+                        </thead>
+                        <tbody id="edaArticleTableBody">
+                          <!-- Populated via JS -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Top 10 Base Colours -->
+              <div class="col-12 col-lg-6">
+                <div class="card card-outline card-secondary shadow-sm h-100 mb-0">
+                  <div class="card-header py-2 bg-body-tertiary">
+                    <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                      <i class="bi bi-palette-fill me-1"></i> Top 10 Base Colour Distribution
+                    </h3>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                      <table class="table table-sm table-bordered table-hover mb-0 align-middle text-center"
+                        style="font-size: 0.875rem;" id="edaColorTable">
+                        <thead class="table-light sticky-top text-center align-middle">
+                          <tr>
+                            <th class="text-center align-middle">Base Colour</th>
+                            <th class="text-center align-middle" style="width: 100px;">Count</th>
+                            <th class="text-center align-middle" style="width: 120px;">Percentage</th>
+                          </tr>
+                        </thead>
+                        <tbody id="edaColorTableBody">
+                          <!-- Populated via JS -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Distribution Summary Breakdown Tables-->
+
+            <!--begin::Multivariate & Co-occurrence Analysis Card-->
+            <div class="card card-outline card-info shadow-sm mb-4">
+              <div class="card-header py-3">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                  <h3 class="card-title fw-bold mb-0 text-body">
+                    <i class="bi bi-diagram-3-fill text-info me-1"></i> Multivariate &amp; Co-occurrence Analysis (Uji Dependensi &amp; Asosiasi Atribut)
+                  </h3>
+                  <div class="d-flex flex-wrap gap-2">
+                    <span class="badge text-bg-primary fw-medium" id="badge-multi-sig"><i class="bi bi-check-circle me-1"></i>5 Uji Signifikan (p &lt; 0.0001)</span>
+                    <span class="badge text-bg-success fw-medium" id="badge-multi-cramer"><i class="bi bi-lightning-charge me-1"></i>Cramér's V: 0.4867 (Sangat Kuat)</span>
+                    <span class="badge text-bg-secondary fw-medium" id="badge-multi-sparsity"><i class="bi bi-grid-3x3 me-1"></i>Sparsitas Matriks: 67.8%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="text-secondary small mb-3">
+                  Analisis multivariat ini membuktikan dependensi statistik antar-atribut katalog (Chi-Square &amp; Cramér's V), mengukur kekuatan asosiasi spesifik menggunakan <em>Normalized Pointwise Mutual Information</em> (NPMI), serta menganalisis implikasi <em>Co-occurrence Bias</em> terhadap retrieval CLIP pada 30 kueri benchmark.
+                </p>
+
+                <!-- Nav Tabs -->
+                <ul class="nav nav-pills mb-3 gap-2" id="multiEdaTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active btn-sm" id="tab-btn-ind-tests" data-bs-toggle="pill" data-bs-target="#tab-content-ind-tests" type="button" role="tab">
+                      <i class="bi bi-calculator me-1"></i> Uji Independensi (&chi;&sup2; &amp; Cramér's V)
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-sm" id="tab-btn-crosstabs" data-bs-toggle="pill" data-bs-target="#tab-content-crosstabs" type="button" role="tab">
+                      <i class="bi bi-grid-fill me-1"></i> Matriks Kontingensi (Heatmap Crosstab)
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-sm" id="tab-btn-npmi" data-bs-toggle="pill" data-bs-target="#tab-content-npmi" type="button" role="tab">
+                      <i class="bi bi-link-45deg me-1"></i> Pasangan Ko-okurensi NPMI &amp; Lift
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-sm" id="tab-btn-bm-queries" data-bs-toggle="pill" data-bs-target="#tab-content-bm-queries" type="button" role="tab">
+                      <i class="bi bi-search me-1"></i> Profil 30 Kueri Benchmark
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-sm" id="tab-btn-synthesis" data-bs-toggle="pill" data-bs-target="#tab-content-synthesis" type="button" role="tab">
+                      <i class="bi bi-journal-text me-1"></i> Sintesis Ilmiah &amp; Implikasi CLIP
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- Tab Panes -->
+                <div class="tab-content" id="multiEdaTabsContent">
+                  <!-- Tab 1: Independence Tests -->
+                  <div class="tab-pane fade show active" id="tab-content-ind-tests" role="tabpanel">
+                    <div class="table-responsive">
+                      <table class="table table-sm table-bordered table-hover align-middle text-center mb-0" style="font-size: 0.875rem;" id="table-ind-tests">
+                        <thead class="table-light">
+                          <tr>
+                            <th class="text-center align-middle">Pasangan Atribut</th>
+                            <th class="text-center align-middle">Deskripsi Relasi Penelitian</th>
+                            <th class="text-center align-middle">Dimensi</th>
+                            <th class="text-center align-middle">Chi-Square (&chi;&sup2;)</th>
+                            <th class="text-center align-middle">df</th>
+                            <th class="text-center align-middle">p-value</th>
+                            <th class="text-center align-middle">Cram&eacute;r's V</th>
+                            <th class="text-center align-middle">Kekuatan Asosiasi</th>
+                          </tr>
+                        </thead>
+                        <tbody id="table-ind-tests-body">
+                          <!-- Populated via JS -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Tab 2: Crosstabs -->
+                  <div class="tab-pane fade" id="tab-content-crosstabs" role="tabpanel">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                      <div class="btn-group btn-group-sm" role="group" id="crosstabSelectorGroup">
+                        <input type="radio" class="btn-check" name="crosstabRadio" id="radio-ct-ga" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="radio-ct-ga">Gender &times; Article Type</label>
+
+                        <input type="radio" class="btn-check" name="crosstabRadio" id="radio-ct-ua" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="radio-ct-ua">Usage &times; Article Type</label>
+
+                        <input type="radio" class="btn-check" name="crosstabRadio" id="radio-ct-ca" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="radio-ct-ca">Top 8 Colour &times; Top 8 Article Type</label>
+                      </div>
+                      <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="switchCrosstabPercent">
+                        <label class="form-check-label small text-secondary" for="switchCrosstabPercent">Tampilkan Persentase Baris (%)</label>
+                      </div>
+                    </div>
+                    <div class="table-responsive border rounded" style="max-height: 480px; overflow-y: auto;" id="crosstabTableContainer">
+                      <!-- Rendered by JS -->
+                    </div>
+                  </div>
+
+                  <!-- Tab 3: NPMI Pairs -->
+                  <div class="tab-pane fade" id="tab-content-npmi" role="tabpanel">
+                    <div class="row g-3">
+                      <div class="col-12 col-xl-6">
+                        <div class="card card-outline card-success shadow-none border h-100 mb-0">
+                          <div class="card-header py-2 bg-success-subtle">
+                            <h6 class="fw-bold mb-0 text-success-emphasis"><i class="bi bi-arrow-up-right-circle me-1"></i> Top Asosiasi Positif Terkuat (High NPMI &amp; High Lift)</h6>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+                              <table class="table table-sm table-hover align-middle mb-0 text-center" style="font-size: 0.875rem;">
+                                <thead class="table-light sticky-top">
+                                  <tr>
+                                    <th class="text-center align-middle">Pasangan Atribut</th>
+                                    <th class="text-center align-middle">Count</th>
+                                    <th class="text-center align-middle">NPMI</th>
+                                    <th class="text-center align-middle">Lift</th>
+                                    <th class="text-center align-middle">Implikasi Keterikatan</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="table-top-positive-npmi-body"></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-xl-6">
+                        <div class="card card-outline card-danger shadow-none border h-100 mb-0">
+                          <div class="card-header py-2 bg-danger-subtle">
+                            <h6 class="fw-bold mb-0 text-danger-emphasis"><i class="bi bi-dash-circle me-1"></i> Top Pasangan Saling Bertentangan / Eksklusif (Negative NPMI)</h6>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+                              <table class="table table-sm table-hover align-middle mb-0 text-center" style="font-size: 0.875rem;">
+                                <thead class="table-light sticky-top">
+                                  <tr>
+                                    <th class="text-center align-middle">Pasangan Atribut</th>
+                                    <th class="text-center align-middle">Count</th>
+                                    <th class="text-center align-middle">NPMI</th>
+                                    <th class="text-center align-middle">Lift</th>
+                                    <th class="text-center align-middle">Tantangan Zero-Shot</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="table-top-negative-npmi-body"></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tab 4: Benchmark Query Co-occurrence -->
+                  <div class="tab-pane fade" id="tab-content-bm-queries" role="tabpanel">
+                    <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                      <table class="table table-sm table-bordered table-hover align-middle mb-0 text-center" style="font-size: 0.875rem;" id="table-bm-cooccur">
+                        <thead class="table-light sticky-top">
+                          <tr>
+                            <th class="text-center align-middle" style="width: 60px;">ID</th>
+                            <th class="text-center align-middle" style="width: 90px;">Tingkat</th>
+                            <th class="text-center align-middle">Teks Kueri</th>
+                            <th class="text-center align-middle" style="width: 100px;">Kandidat Relevan</th>
+                            <th class="text-center align-middle" style="width: 90px;">% Korpus</th>
+                            <th class="text-center align-middle" style="width: 220px;">Klasifikasi Ko-okurensi</th>
+                            <th class="text-center align-middle">Catatan Ilmiah Evaluasi CLIP</th>
+                          </tr>
+                        </thead>
+                        <tbody id="table-bm-cooccur-body"></tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Tab 5: Academic Synthesis -->
+                  <div class="tab-pane fade" id="tab-content-synthesis" role="tabpanel">
+                    <div class="row g-3" id="synthesisCardsContainer"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!--end::Multivariate & Co-occurrence Analysis Card-->
+
+            <!--begin::Dataset Sample & Attribute Verification Table Card (AdminLTE tables/data.html Pattern)-->
+            <div class="card card-outline card-primary shadow-sm mb-4">
+              <div class="card-header">
+                <h3 class="card-title fw-bold mb-0">
+                  <i class="bi bi-table me-1"></i> Verified Dataset Sample &amp; Attribute Annotation Table
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 mb-3 align-items-center justify-content-between">
+                  <div class="d-flex gap-2">
+                    <button id="eda-export-csv" type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-filetype-csv me-1" aria-hidden="true"></i>
+                      Export CSV
+                    </button>
+                    <button id="eda-export-json" type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-filetype-json me-1" aria-hidden="true"></i>
+                      Export JSON
+                    </button>
+                    <button id="eda-print-table" type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-printer me-1" aria-hidden="true"></i>
+                      Print
+                    </button>
+                  </div>
+                  <div class="text-secondary small">
+                    <i class="bi bi-info-circle me-1"></i> Quality Audit &amp; Analysis of Image–Metadata Pairs Across
+                    20 Representative Fashion Catalog Samples (Appendix A)
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <div id="eda-tabulator-table"></div>
+                </div>
+              </div>
+              <div class="card-footer text-secondary small">
+                Powered by
+                <a href="https://tabulator.info/" target="_blank" rel="noopener">Tabulator</a>
+                &mdash; vanilla JS, no jQuery required. Template reference: AdminLTE v4.9.1 (tables/data.html).
+              </div>
+            </div>
+            <!--end::Dataset Sample & Attribute Verification Table Card-->
+
+            <!--begin::5 Key Multimodal Retrieval Insights Card-->
+            <div class="card card-outline card-secondary shadow-sm mb-4">
+              <div class="card-header py-2 bg-body-tertiary">
+                <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                  <i class="bi bi-lightbulb me-1"></i> 5 Key Multimodal Retrieval Insights for CLIP Zero-Shot Ranking
+                </h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
+                    <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                    <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-3" id="edaInsightsContainer">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+            <!--end::5 Key Multimodal Retrieval Insights Card-->
+
+          </div>
+          <!--end::View Exploratory Data Analysis & Retrieval Insights-->
+
+          <!--begin::View Data Preparation & Research Transparency-->
+          <div id="view-dataprep" class="d-none">
+
+
+            <!--begin::Pipeline Stages Card-->
+            <div class="card card-outline card-primary shadow-sm mb-4">
+              <div class="card-header py-2 bg-body-tertiary">
+                <h3 class="card-title fw-bold fs-6 mb-0 text-body">
+                  <i class="bi bi-diagram-3 me-2 text-primary"></i> 6 End-to-End Data Preparation Pipeline Stages
+                </h3>
+              </div>
+              <div class="card-body p-3">
+                <p class="text-secondary small mb-3">
+                  Transparansi penuh di seluruh transformasi data: mulai dari verifikasi integritas file fisik mentah,
+                  penyaringan kategori target, sampling terstratifikasi yang reproducible, dan sinkronisasi ground truth
+                  deterministik, hingga pra-komputasi indeks vektor CLIP ViT-B/32 secara offline.
+                </p>
+                <div class="row g-3" id="dpPipelineStagesContainer">
+                  <!-- Populated dynamically via JS -->
+                </div>
+              </div>
+            </div>
+            <!--end::Pipeline Stages Card-->
+
+            <!--begin::Charts & Distribution Row-->
+            <div class="row g-4 mb-4">
+              <!-- Attrition Waterfall Chart / Table -->
+              <div class="col-12 col-xl-6">
+                <div class="card card-outline card-info shadow-sm h-100">
+                  <div class="card-header">
+                    <h3 class="card-title fw-bold">
+                      <i class="bi bi-funnel me-1"></i> Data Attrition Funnel (Waterfall Analysis)
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    <div id="chart-dataprep-attrition"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ArticleType Distribution in 1500 Corpus -->
+              <div class="col-12 col-xl-6">
+                <div class="card card-outline card-primary shadow-sm h-100">
+                  <div class="card-header">
+                    <h3 class="card-title fw-bold">
+                      <i class="bi bi-bar-chart-steps me-1"></i> Evaluation Corpus Category Distribution (1,500 Images)
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    <div id="chart-dataprep-dist"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Charts & Distribution Row-->
+
+          </div>
+          <!--end::View Data Preparation & Research Transparency-->
+
+        </div>
+      </div>
+      <!--end::App Content-->
+    </main>
+    <!--end::App Main-->
+
+    <!--begin::Footer-->
+    <footer class="app-footer">
+      Powered by CLIP ViT-B/32 (512-d) &amp; SQLite Database
+    </footer>
+    <!--end::Footer-->
+  </div>
+  <!--end::App Wrapper-->
+
+
+  <!-- Modal: Product Image Zoom Preview -->
+  <div class="modal fade" id="imageZoomModal" tabindex="-1" aria-labelledby="imgZoomLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header py-2 px-3 bg-secondary text-white">
+          <h6 class="modal-title fw-bold" id="imgZoomLabel">Detail Tampilan Gambar</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-3 bg-white">
+          <img id="zoomModalImg" src="" alt=""
+            style="max-height: 480px; max-width: 100%; object-fit: contain; border-radius: 4px;" />
+          <p id="zoomModalCaption" class="text-secondary small mt-2 mb-0 fw-semibold"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Detail Evaluasi Produk & Atribut -->
+  <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white py-2 px-3">
+          <h6 class="modal-title fw-bold" id="productDetailModalLabel">
+            <i class="bi bi-card-checklist me-2 text-info"></i> Detail Produk &amp; Evaluasi Relevansi
+          </h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3" id="productDetailModalBody">
+          <!-- Dynamic Content -->
+        </div>
+        <div class="modal-footer py-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: Bootstrap 5 Bundle & AdminLTE v4 JS (Local Copy) -->
+  <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/static/adminlte/js/adminlte.min.js"></script>
+  <!-- Tabulator Tables JS (Local Copy) -->
+  <script src="/static/vendor/tabulator/tabulator.min.js"></script>
+  <!-- ApexCharts JS (Local Copy) -->
+  <script src="/static/vendor/apexcharts/apexcharts.min.js"></script>
+
+  <!-- Application Modular Scripts -->
+  <script src="/static/js/retrieval.js"></script>
+  <script src="/static/js/benchmark.js"></script>
+  <script src="/static/js/groundtruth.js"></script>
+  <script src="/static/js/eda.js"></script>
+  <script src="/static/js/dataprep.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

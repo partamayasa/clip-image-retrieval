@@ -1,0 +1,241 @@
+/* Multimodal Information Retrieval - Application Stylesheet */
+
+/* 1. Tabulator Table Styling & Dark Mode Integration */
+.tabulator {
+  font-size: 0.85rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+.tabulator .tabulator-header {
+  background-color: var(--bs-tertiary-bg);
+  border-bottom: 2px solid var(--bs-border-color);
+  color: var(--bs-body-color);
+  font-weight: 600;
+}
+.tabulator .tabulator-header .tabulator-col {
+  background-color: var(--bs-tertiary-bg);
+  border-right: 1px solid var(--bs-border-color-translucent);
+}
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+  padding: 8px 6px !important;
+}
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+  padding-right: 16px !important;
+}
+.tabulator .tabulator-header .tabulator-col .tabulator-col-title {
+  white-space: nowrap !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  font-weight: 600;
+}
+.tabulator .tabulator-header .tabulator-col .tabulator-col-sorter {
+  right: 2px !important;
+}
+.tabulator .tabulator-row {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border-bottom: 1px solid var(--bs-border-color-translucent);
+  transition: background-color 0.15s ease;
+}
+.tabulator .tabulator-row:hover {
+  background-color: var(--bs-tertiary-bg) !important;
+}
+.tabulator .tabulator-cell {
+  padding: 8px 6px;
+  vertical-align: middle;
+  border-right: 1px solid var(--bs-border-color-translucent);
+  color: var(--bs-body-color) !important;
+}
+
+/* 2. EDA & Ground Truth Tables: Multi-line text wrap & readable typography */
+#eda-tabulator-table {
+  font-size: 0.875rem;
+}
+#eda-tabulator-table .tabulator-cell,
+#gt-tabulator-table .tabulator-cell {
+  white-space: normal !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.4 !important;
+  padding: 8px 8px !important;
+}
+#eda-tabulator-table .tabulator-row {
+  height: auto !important;
+  min-height: 85px !important;
+}
+#gt-tabulator-table .tabulator-row {
+  height: auto !important;
+  min-height: 52px !important;
+}
+#gt-tabulator-table .tabulator-col-dummy,
+#gt-tabulator-table .tabulator-cell.tabulator-col-dummy {
+  display: none !important;
+  width: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+.tabulator .tabulator-footer {
+  background-color: var(--bs-tertiary-bg);
+  border-top: 1px solid var(--bs-border-color);
+  color: var(--bs-body-color);
+  padding: 8px 12px;
+}
+.tabulator .tabulator-footer .tabulator-page {
+  border-radius: 4px !important;
+  margin: 0 2px !important;
+  border: 1px solid var(--bs-border-color);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+.tabulator .tabulator-footer .tabulator-page.active {
+  background-color: var(--bs-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--bs-primary) !important;
+}
+.tabulator-header-filter input,
+.tabulator-header-filter select {
+  font-size: 0.8rem;
+  border-radius: 4px;
+  padding: 2px 6px;
+  border: 1px solid var(--bs-border-color);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+[data-bs-theme="dark"] .tabulator {
+  background-color: #1e2227;
+  border-color: #373b42;
+}
+[data-bs-theme="dark"] .tabulator .tabulator-header,
+[data-bs-theme="dark"] .tabulator .tabulator-header .tabulator-col,
+[data-bs-theme="dark"] .tabulator .tabulator-footer {
+  background-color: #181b1f;
+  border-color: #373b42;
+}
+[data-bs-theme="dark"] .tabulator .tabulator-row {
+  background-color: #1e2227;
+  border-color: #2b3035;
+}
+[data-bs-theme="dark"] .tabulator .tabulator-row:hover {
+  background-color: #262b32 !important;
+}
+[data-bs-theme="dark"] .tabulator .tabulator-cell {
+  border-color: #2b3035;
+}
+
+/* 3. Product Cards & Visual Image Box */
+.product-img-box {
+  width: 100%;
+  height: 235px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #ffffff;
+  padding: 4px;
+  cursor: pointer;
+}
+.product-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+  transition: transform 0.25s ease;
+}
+.card:hover .product-img-box img {
+  transform: scale(1.05);
+}
+.product-card-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3.2rem;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+}
+.pill-btn {
+  font-size: 0.8rem;
+  border-radius: 50rem;
+  padding: 0.25rem 0.75rem;
+  transition: all 0.15s ease;
+}
+.badge-subtle {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* 4. Data Preparation Tables - Non-bold styling */
+#dpAttritionTableBody td,
+#dpAttritionTableBody th,
+#dpAttritionTableBody .badge,
+#dpCategoriesTableBody td,
+#dpCategoriesTableBody th,
+#dpCategoriesTableBody .badge {
+  font-weight: 400 !important;
+}
+
+/* 5. Data Tables - Universal vertical & horizontal centering */
+.table.align-middle th,
+.table.align-middle td,
+.table.align-middle > thead > tr > th,
+.table.align-middle > tbody > tr > td,
+.table.align-middle > :not(caption) > * > * {
+  vertical-align: middle !important;
+}
+
+.table.text-center th,
+.table.text-center td,
+.table.text-center > thead > tr > th,
+.table.text-center > tbody > tr > td,
+.table.text-center > :not(caption) > * > * {
+  text-align: center;
+}
+
+#table-ind-tests th,
+#table-ind-tests td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* 6. Unified EDA Table Font Size (0.875rem / 14px) */
+#view-eda .table,
+#view-eda .table th,
+#view-eda .table td,
+#view-eda .tabulator,
+#view-eda .tabulator-header,
+#view-eda .tabulator-cell,
+#view-eda .tabulator-col-title {
+  font-size: 0.875rem !important;
+}
+
+#view-eda .table td .small,
+#view-eda .table th .small {
+  font-size: 0.875rem !important;
+}
+
+/* 7. EDA Table Body: Non-bold styling & Cramér's V black color */
+#table-ind-tests tbody td,
+#table-ind-tests tbody th,
+#table-ind-tests tbody span,
+#table-ind-tests tbody .badge,
+#view-eda .table tbody td,
+#view-eda .table tbody th,
+#view-eda .table tbody span {
+  font-weight: 400 !important;
+}
+
+#table-ind-tests tbody td:nth-child(7),
+#table-ind-tests tbody td:nth-child(7) * {
+  color: var(--bs-body-color) !important;
+  font-weight: 400 !important;
+}
+
+
